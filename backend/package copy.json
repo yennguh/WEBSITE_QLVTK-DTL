@@ -1,8 +1,12 @@
 {
-  "name": "backend",
+  "name": "trello-api-by-me",
+  "private": true,
   "version": "1.0.0",
+  "author": "Tuanta",
   "description": "",
-  "main": "index.js",
+  "engines": {
+    "node": "20.17.0"
+  },
   "scripts": {
     "lint": "eslint src --ext js --report-unused-disable-directives --max-warnings 0",
     "clean": "rm -rf build && mkdir build",
@@ -11,9 +15,6 @@
     "production": "npm run build && node ./build/src/server.js",
     "dev": "nodemon   --exec babel-node ./src/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.22.10",
     "body-parser": "^1.20.3",
