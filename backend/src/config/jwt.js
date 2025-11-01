@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-
+import pkg from "jsonwebtoken"
+const { jwt } = pkg
 
 let generateToken = (user, secretSignature, tokenLife) => {
   return new Promise((resolve, reject) => {
@@ -57,7 +57,7 @@ let verifyToken = (token, secretKey) => {
     });
   });
 }
-export const jwtHelper={
+export const jwtHelper = {
   generaterefresh,
   generateToken,
   verifyToken
