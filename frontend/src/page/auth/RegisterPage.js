@@ -1,13 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import background from "../../public/assets/bg.jpg";
 import logo from "../../public/assets/logo.jpg";
-import { useForm, Watch } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { fetchRegisterAPI } from "../../api/users.api";
 const RegisterPage = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onTouched" });
+    const navigate = useNavigate();
+    const { register, handleSubmit, watch, formState: { errors, isValid } } = useForm({ mode: "onTouched" });
 
-    const onSubmit = (data) => {
-        console.log("Form data:", data);
+    const onSubmit = async (data) => {
+        let payload = {
+            email: data.email,
+            password: data.password,
+            fullname: data.fullname,
+            phone: data.phone
+        }
+        try {
+
+            const res = await fetchRegisterAPI(payload);
+            if (res) {
+                navigate("/login");
+            }
+        } catch (error) {
+        }
+
     };
 
     return (
@@ -35,15 +51,15 @@ const RegisterPage = () => {
                             Họ và tên
                         </label>
                         <input
-                            {...register("name", {
+                            {...register("fullname", {
                                 required: "Họ tên là bắt buộc",
                             })}
                             type="text"
                             placeholder="Nguyễn Văn A"
-                            className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                            className="mt-1 w-full p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
                         />
                         {errors.name && (
-                            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                            <p className="text-red-500 text-sm mt-1">{errors.fullname.message}</p>
                         )}
                     </div>
 
@@ -61,7 +77,7 @@ const RegisterPage = () => {
                             })}
                             type="email"
                             placeholder="email@example.com"
-                            className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                            className="mt-1 w-full p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
                         />
                         {errors.email && (
                             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -81,8 +97,8 @@ const RegisterPage = () => {
                                 },
                             })}
                             type="tel"
-                            placeholder="0123456789"
-                            className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                            placeholder="0962********"
+                            className="mt-1 w-full p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
                         />
                         {errors.phone && (
                             <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
@@ -95,8 +111,11 @@ const RegisterPage = () => {
                             {...register("password", { required: "Mật khẩu là bắt buộc" })}
                             type="password"
                             placeholder="••••••••"
-                            className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                            className="mt-1 w-full p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
                         />
+                        {errors.password && (
+                            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                        )}
                     </div>
 
                     <div>
@@ -105,17 +124,20 @@ const RegisterPage = () => {
                             {...register("confirmPassword", {
                                 required: "Xác nhận mật khẩu là bắt buộc",
                                 validate: (value) =>
-                                    value === Watch("password") || "Mật khẩu không khớp",
+                                    value === watch("password") || "Mật khẩu không khớp",
                             })}
                             type="password"
                             placeholder="••••••••"
-                            className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                            className="mt-1 w-full p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
                         />
+                        {errors.confirmPassword && (
+                            <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+                        )}
                     </div>
 
 
 
-                    <button type="submit" disabled={!register.isValid} className="w-full bg-red-600 text-white font-semibold py-3 rounded-full hover:bg-red-700 transition">
+                    <button type="submit" disabled={!isValid} className={`w-full bg-red-600 text-white font-semibold py-3 rounded-full transition ${!isValid ? "opacity-50 cursor-not-allowed" : "hover:bg-red-700"}`}>
                         Đăng ký
                     </button>
 

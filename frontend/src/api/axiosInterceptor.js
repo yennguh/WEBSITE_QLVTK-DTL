@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 // Khởi tạo một instance riêng
 const api = axios.create({
     baseURL: 'http://localhost:8017', // Thay đổi theo API của bạn
@@ -12,7 +12,7 @@ const api = axios.create({
 // Interceptor cho Request
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('access_token'); // hoặc từ context/store
+        const token = Cookies.get('accessToken'); // hoặc từ context/store
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

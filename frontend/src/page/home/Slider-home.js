@@ -18,7 +18,6 @@ export default function ImageSlider({ images = [], autoPlayInterval = 5000, clas
     if (!Array.isArray(images)) images = [];
 
     useEffect(() => {
-        console.log('ImageSlider mounted', images);
         startAutoplay();
         return stopAutoplay;
         // eslint-disable-next-line react-hooks/exhaustive-deps

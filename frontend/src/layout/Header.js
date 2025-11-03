@@ -1,11 +1,24 @@
-import { useState } from "react";
-import { FaFacebookF, FaYoutube } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import { FaFacebookF } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import logoHeader from "../public/assets/logo.jpg";
+import { useEffect, useState } from "react";
+import { inforUser } from "../api/users.api";
 export default function Header() {
-  const [langOpen, setLangOpen] = useState(false);
+  const [user, setUser] = useState();
+  const fetchUsers = async () => {
+    const result = await inforUser();
+    if (result) {
+      setUser(result);
+    } else {
+      setUser(null);
+    }
 
+  };
+
+  useEffect(() => {
+
+    fetchUsers();
+  }, []);
   return (
     <header className="w-full shadow-sm border-b bg-white">
       <div className="w-full mx-auto flex items-center justify-between py-2 px-4">
@@ -46,11 +59,15 @@ export default function Header() {
 
         {/* Login + social + lang */}
         <div className="flex items-center gap-3">
-          <Link to="/login">
-            <button className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-red-700">
-              Đăng nhập / Đăng ký
-            </button>
-          </Link>
+          {user ? (
+            <span>Xin chào, <span className="font-bold">{user.fullname}</span></span>
+          ) : (
+            <Link to="/login">
+              <button className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-red-700">
+                Đăng nhập / Đăng ký
+              </button>
+            </Link>
+          )}
           <div className="flex items-center gap-2">
             <a
               href="#"

@@ -1,16 +1,47 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import background from "../../public/assets/bg.jpg";
 import logo from "../../public/assets/logo.jpg";
 import { EyeOff, Eye } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { fetchLoginAPI } from "../../api/users.api";
+import Cookies from 'js-cookie';
 const LoginPage = () => {
+    const navigate = useNavigate();
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
     const togglePassword = () => setPasswordVisible(v => !v);
-    const onSubmit = (data) => {
-        console.log("Form data:", data);
+    const onSubmit = async (data) => {
+        const payload = {
+            email: data.email,
+            password: data.password
+        };
+        try {
+            const res = await fetchLoginAPI(payload);
+            // normalize possible response shapes
+            const accessToken = res?.accessToken || res?.access_token || res?.data?.accessToken || res?.data?.access_token;
+            const refreshToken = res?.refreshToken || res?.refresh_token || res?.data?.refreshToken || res?.data?.refresh_token;
+
+            if (accessToken) {
+                Cookies.set("accessToken", accessToken);
+                if (refreshToken) Cookies.set("refreshToken", refreshToken);
+                navigate('/home');
+                return;
+            }
+
+            // Some backends return a success flag or message
+            if (res && (res.success === true || res.status === 'ok')) {
+                navigate('/home');
+                return;
+            }
+
+            // Fallback message from server
+            const msg = res?.message || 'Tài khoản hoặc mật khẩu không đúng !';
+            alert(msg);
+        } catch (error) {
+            console.error('Login error:', error?.response ?? error);
+            const errMsg = error?.response?.data?.message || error?.message || 'Lỗi khi đăng nhập';
+            alert(errMsg);
+        }
     };
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onTouched" });
 
