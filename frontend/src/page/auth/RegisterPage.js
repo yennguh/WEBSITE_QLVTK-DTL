@@ -2,8 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import background from "../../public/assets/bg.jpg";
 import logo from "../../public/assets/logo.jpg";
-
+import { useForm, Watch } from "react-hook-form";
 const RegisterPage = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const onSubmit = (data) => {
+        console.log("Form data:", data);
+    };
+
     return (
         <div
             className="min-h-screen bg-cover bg-center flex items-center justify-center relative"
@@ -23,7 +29,7 @@ const RegisterPage = () => {
                 </div>
 
                 {/* Form đăng ký */}
-                <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8 space-y-5 mb-5">
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8 space-y-5 mb-5">
                     <div>
                         <label className="text-sm font-medium text-gray-700">
                             Họ và tên
@@ -40,10 +46,20 @@ const RegisterPage = () => {
                             Email
                         </label>
                         <input
+                            {...register("email", {
+                                required: "Email là bắt buộc",
+                                pattern: {
+                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                    message: "Email không hợp lệ",
+                                },
+                            })}
                             type="email"
                             placeholder="email@example.com"
                             className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
                         />
+                        {errors.email && (
+                            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                        )}
                     </div>
 
                     <div>
@@ -51,15 +67,26 @@ const RegisterPage = () => {
                             Số điện thoại
                         </label>
                         <input
+                            {...register("phone", {
+                                required: "Số điện thoại là bắt buộc",
+                                pattern: {
+                                    value: /^[0-9]{10}$/,
+                                    message: "Số điện thoại không hợp lệ",
+                                },
+                            })}
                             type="tel"
                             placeholder="0123456789"
                             className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
                         />
+                        {errors.phone && (
+                            <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                        )}
                     </div>
 
                     <div>
                         <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
                         <input
+                            {...register("password", { required: "Mật khẩu là bắt buộc" })}
                             type="password"
                             placeholder="••••••••"
                             className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
@@ -69,6 +96,11 @@ const RegisterPage = () => {
                     <div>
                         <label className="text-sm font-medium text-gray-700">Xác nhận mật khẩu</label>
                         <input
+                            {...register("confirmPassword", {
+                                required: "Xác nhận mật khẩu là bắt buộc",
+                                validate: (value) =>
+                                    value === Watch("password") || "Mật khẩu không khớp",
+                            })}
                             type="password"
                             placeholder="••••••••"
                             className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
@@ -77,7 +109,7 @@ const RegisterPage = () => {
 
 
 
-                    <button className="w-full bg-red-600 text-white font-semibold py-3 rounded-full hover:bg-red-700 transition">
+                    <button type="submit" disabled={!register.isValid} className="w-full bg-red-600 text-white font-semibold py-3 rounded-full hover:bg-red-700 transition">
                         Đăng ký
                     </button>
 
@@ -87,7 +119,7 @@ const RegisterPage = () => {
                             Đăng nhập
                         </Link>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );

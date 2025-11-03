@@ -73,7 +73,7 @@ export default function ImageSlider({ images = [], autoPlayInterval = 5000, clas
         >
             {/* Slides container */}
             <div className="flex transition-transform duration-700 ease-in-out"
-                style={{ transform: `translateX(-${index * 100}%)`, width: `${Math.max(1, length) * 100}%` }}>
+                style={{ transform: `translateX(-${index * 100}%)`, width: `100%` }}>
                 {images.length === 0 ? (
                     <div className="w-full flex items-center justify-center p-12 bg-gray-100 text-gray-500">No images provided</div>
                 ) : images.map((src, i) => (
@@ -81,8 +81,7 @@ export default function ImageSlider({ images = [], autoPlayInterval = 5000, clas
                         <img
                             src={src}
                             alt={`slide-${i + 1}`}
-                            className="w-full h-[520px] object-cover"
-                            draggable={false}
+                            className=" w-full h-[520px] object-cover"
                         />
                         {/* optional caption area (uncomment to use) */}
                         {/* <div className="absolute bottom-4 left-4 bg-black/40 text-white px-3 py-1 rounded">Caption {i+1}</div> */}

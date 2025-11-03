@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 import background from "../../public/assets/bg.jpg";
 import logo from "../../public/assets/logo.jpg";
 import { EyeOff, Eye } from "lucide-react";
-
+import { useForm } from "react-hook-form";
 const LoginPage = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
-
-
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
     const togglePassword = () => setPasswordVisible(v => !v);
+    const onSubmit = (data) => {
+        console.log("Form data:", data);
+    };
+    const { loginForm, handleSubmit, formState: { errors } } = useForm();
+
+
     return (
         <div
             className="min-h-screen bg-cover bg-center flex items-center justify-center"
@@ -29,29 +35,42 @@ const LoginPage = () => {
                 </div>
 
                 {/* Form đăng nhập */}
-                <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8 space-y-5">
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8 space-y-5">
                     <div>
                         <label className="text-sm font-medium text-gray-700">
                             Email/ Số điện thoại
                         </label>
                         <input
+                            {...loginForm("email", {
+                                required: "Email là bắt buộc",
+                                pattern: {
+                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                    message: "Email không hợp lệ",
+                                },
+                            })}
                             type="text"
                             placeholder="admin@admin.com"
                             className="mt-1 w-full p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
                         />
+                        {errors.email && (
+                            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                        )}
                     </div>
 
                     <div>
                         <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
                         <div className="relative mt-1">
                             <input
+                                {...loginForm("password", { required: "Mật khẩu là bắt buộc" })}
                                 type={passwordVisible ? "text" : "password"}
                                 placeholder="••••••••"
                                 className="w-full pr-12 p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
                                 aria-label="Mật khẩu"
                             />
 
-
+                            {errors.password && (
+                                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                            )}
                             {/* nút hiển thị/mờ mật khẩu */}
                             <button
                                 type="button"
@@ -93,7 +112,7 @@ const LoginPage = () => {
                             Đăng ký
                         </Link>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );
