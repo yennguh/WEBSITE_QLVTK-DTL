@@ -11,7 +11,7 @@ const START_SERVER = () => {
   app.use(bodyParser.json());
   const corsOption = {
     credentials: true,
-    origin: ['http://localhost:4200']
+    origin: ['http://localhost:4200', 'http://localhost:3000']
   }
   app.use(cors(corsOption));
   setupSwagger(app);

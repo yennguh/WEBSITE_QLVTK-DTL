@@ -3,9 +3,10 @@ const User_COLLECTION_NAME = 'users'
 import { ObjectId } from "mongodb"
 import { GET_DB } from "../config/mongodb.js"
 const USER_COLLECTION_SCHEMA = Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string()
-        .min(4),
+    email: Joi.string().email().required(),
+    password: Joi.string(),
+    phone: Joi.string().required(),
+    fullname: Joi.string().required(),
     createdAt: Joi.date().timestamp('javascript').default(Date.now),
     updateAt: Joi.date().timestamp('javascript').default(null)
 })
@@ -14,10 +15,11 @@ const validateCreated = async (data) => {
 }
 const CreatedUser = async (payload) => {
     try {
-
-        console.log("payload", payload);
+        const user = await GET_DB().collection(User_COLLECTION_NAME).findOne({ email: payload.email })
+        if (user) {
+            throw new Error("Email da ton tai")
+        }
         const validadata = await validateCreated(payload)
-        console.log("validadata", validadata);
         const result = await GET_DB().collection(User_COLLECTION_NAME).insertOne(validadata)
         return result;
     }
@@ -26,7 +28,6 @@ const CreatedUser = async (payload) => {
     }
 }
 const FindUserById = async (id) => {
-
     try {
         const result = await GET_DB().collection(User_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
         return result;
@@ -36,10 +37,9 @@ const FindUserById = async (id) => {
     }
 }
 const Login = async (payload) => {
-
     try {
         const result = await GET_DB().collection(User_COLLECTION_NAME).findOne({
-            username: payload.username,
+            email: payload.email,
             password: payload.password
         })
         return result;

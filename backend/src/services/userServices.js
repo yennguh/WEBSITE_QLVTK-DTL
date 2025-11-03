@@ -13,10 +13,10 @@ const CreatedUser = async (payload) => {
 
 }
 
-const FindUserbyId = async (id) => {
+const GetUserInfor = async (id) => {
     try {
         const result = USERMODEL.FindUserById(id);
-        return result;
+        return result
 
     }
     catch (error) {
@@ -39,6 +39,6 @@ const Login_User = async (payload) => {
 
 export const userServices = {
     CreatedUser,
-    FindUserbyId,
+    GetUserInfor,
     Login_User
 }

@@ -1,6 +1,4 @@
-import pkg from "jsonwebtoken"
-const { jwt } = pkg
-
+import jwt from "jsonwebtoken"
 let generateToken = (user, secretSignature, tokenLife) => {
   return new Promise((resolve, reject) => {
     // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
@@ -8,7 +6,7 @@ let generateToken = (user, secretSignature, tokenLife) => {
     jwt.sign(
       {
         _id: user._id,
-        username: user.username,
+        email: user.email,
       },
       secretSignature,
       {
@@ -28,7 +26,7 @@ let generaterefresh = (user, secretSignature, tokenLife) => {
     // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
     const userData = {
       _id: user._id,
-      username: user.username,
+      email: user.email,
     }
     // Thực hiện ký và tạo token
     jwt.sign(
