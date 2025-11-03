@@ -4,7 +4,7 @@ import background from "../../public/assets/bg.jpg";
 import logo from "../../public/assets/logo.jpg";
 import { useForm, Watch } from "react-hook-form";
 const RegisterPage = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onTouched" });
 
     const onSubmit = (data) => {
         console.log("Form data:", data);
@@ -35,10 +35,16 @@ const RegisterPage = () => {
                             Họ và tên
                         </label>
                         <input
+                            {...register("name", {
+                                required: "Họ tên là bắt buộc",
+                            })}
                             type="text"
                             placeholder="Nguyễn Văn A"
                             className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
                         />
+                        {errors.name && (
+                            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                        )}
                     </div>
 
                     <div>

@@ -64,7 +64,7 @@ const LostItems = () => {
                 {data.map((item) => (
                     <div
                         key={item.id}
-                        className="bg-white border rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden"
+                        className="bg-white border rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer"
                     >
                         <div className="relative">
                             <img

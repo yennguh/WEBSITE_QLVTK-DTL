@@ -12,7 +12,7 @@ const LoginPage = () => {
     const onSubmit = (data) => {
         console.log("Form data:", data);
     };
-    const { loginForm, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onTouched" });
 
 
     return (
@@ -38,10 +38,10 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8 space-y-5">
                     <div>
                         <label className="text-sm font-medium text-gray-700">
-                            Email/ Số điện thoại
+                            Email
                         </label>
                         <input
-                            {...loginForm("email", {
+                            {...register("email", {
                                 required: "Email là bắt buộc",
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -61,7 +61,7 @@ const LoginPage = () => {
                         <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
                         <div className="relative mt-1">
                             <input
-                                {...loginForm("password", { required: "Mật khẩu là bắt buộc" })}
+                                {...register("password", { required: "Mật khẩu là bắt buộc" })}
                                 type={passwordVisible ? "text" : "password"}
                                 placeholder="••••••••"
                                 className="w-full pr-12 p-3 border rounded-lg focus:ring-1 focus:ring-red-500 outline-none"
@@ -69,7 +69,7 @@ const LoginPage = () => {
                             />
 
                             {errors.password && (
-                                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
                             )}
                             {/* nút hiển thị/mờ mật khẩu */}
                             <button
