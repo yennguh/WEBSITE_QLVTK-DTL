@@ -7,6 +7,7 @@ let generateToken = (user, secretSignature, tokenLife) => {
       {
         _id: user._id,
         email: user.email,
+        roles: user.roles
       },
       secretSignature,
       {

@@ -7,4 +7,5 @@ Router.post('/login', userController.Login)
 Router.post('/register', userController.CreatedUser)
 Router.get('/inforUser', isAuth, userController.InfoUser)
 Router.post('/refresh-token', userController.refreshToken)
+Router.get('/list', isAuth, userController.ListUsers)
 export default Router
