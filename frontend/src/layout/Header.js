@@ -10,6 +10,8 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!open);
   const [user, setUser] = useState();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { logout } = useContext(AuthContext);
   const fetchUsers = async () => {
     const result = await inforUser();
     if (result) {
@@ -17,7 +19,11 @@ export default function Header() {
     } else {
       setUser(null);
     }
+  };
 
+  const handleLogout = () => {
+    logout()
+    window.location.href = '/login';
   };
   const { token } = useContext(AuthContext);
   useEffect(() => {
@@ -66,7 +72,37 @@ export default function Header() {
         {/* Login + social + lang */}
         <div className="flex items-center gap-3">
           {user ? (
-            <span>Xin chào, <span className="font-bold">{user.fullname}</span></span>
+            <div className="relative">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded-md"
+              >
+                <span>Xin chào, <span className="font-bold">{user.fullname}</span></span>
+              </button>
+
+              {showDropdown && (
+                <>
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => setShowDropdown(false)}
+                  ></div>
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 py-1">
+                    <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      Thông tin cá nhân
+                    </Link>
+                    <Link to="/change-password" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      Đổi mật khẩu
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           ) : (
             <Link to="/login">
               <button className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-red-700">
