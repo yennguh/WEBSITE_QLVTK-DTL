@@ -7,12 +7,20 @@ const MainLayout = () => {
     return (
         <div className="site">
             <Header />
-            <Home></Home>
-            <div className="site-body">
-                <main className="site-content">
-                    <Outlet /> {/* 👈 render route con ở đây */}
+
+            <div className="site-body" style={{ display: 'flex', gap: 24 }}>
+                {/* Sidebar */}
+
+                {/* Main content area */}
+                <main className="site-content" style={{ flex: 1 }}>
+                    {/* keep the Home hero/slider above the routed content */}
+                    <Home />
+                    <div style={{ marginTop: 16 }}>
+                        <Outlet />
+                    </div>
                 </main>
             </div>
+
             <Footer />
         </div>
     );

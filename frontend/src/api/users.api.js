@@ -14,6 +14,17 @@ export const fetchRegisterAPI = async (payload) => {
       return null;
    }
 };
+export const fetchAllUsers = async (params = {}) => {
+   try {
+      const response = await api.get(`${API_ROOT}/v1/user/list`, {
+         params, // axios sẽ tự chuyển object này thành query string
+      });
+      return response.data;
+   } catch (error) {
+      console.error("Lỗi lấy danh sách người dùng:", error.response?.data || error.message);
+      return null;
+   }
+};
 export const inforUser = async () => {
    try {
       const response = await api.get(`${API_ROOT}/v1/user/inforUser`);

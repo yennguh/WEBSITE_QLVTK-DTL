@@ -2,9 +2,10 @@ import { FaFacebookF } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { Link } from "react-router-dom";
 import logoHeader from "../public/assets/logo.jpg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdOutlineClear } from "react-icons/md";
 import { inforUser } from "../api/users.api";
+import { AuthContext } from "../core/AuthContext";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!open);
@@ -18,10 +19,11 @@ export default function Header() {
     }
 
   };
-
+  const { token } = useContext(AuthContext);
   useEffect(() => {
-
-    fetchUsers();
+    if (token) {
+      fetchUsers();
+    }
   }, []);
   return (
     <header className="w-full shadow-sm border-b bg-white">
@@ -80,9 +82,9 @@ export default function Header() {
               <FaFacebookF className="text-lg" />
             </a>
           </div>
-          <button onClick={toggleDrawer} type="button" class="relative inline-flex items-center p-1 text-sm font-medium text-center">
+          <button onClick={toggleDrawer} type="button" className="relative inline-flex items-center p-1 text-sm font-medium text-center">
             <IoIosNotifications className="text-2xl"></IoIosNotifications>
-            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2">20</div>
+            <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2">20</div>
           </button>
           {open && (
             <div

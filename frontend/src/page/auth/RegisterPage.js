@@ -13,7 +13,8 @@ const RegisterPage = () => {
             email: data.email,
             password: data.password,
             fullname: data.fullname,
-            phone: data.phone
+            phone: data.phone,
+            roles: ['user']
         }
         try {
 

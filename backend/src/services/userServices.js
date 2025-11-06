@@ -37,8 +37,18 @@ const Login_User = async (payload) => {
 
 }
 
+const ListUsers = async (params) => {
+    try {
+        const result = await USERMODEL.ListUsers(params);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const userServices = {
     CreatedUser,
     GetUserInfor,
-    Login_User
+    Login_User,
+    ListUsers
 }

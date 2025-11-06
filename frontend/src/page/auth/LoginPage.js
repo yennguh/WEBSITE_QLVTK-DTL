@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import background from "../../public/assets/bg.jpg";
 import logo from "../../public/assets/logo.jpg";
@@ -6,8 +6,11 @@ import { EyeOff, Eye } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { fetchLoginAPI } from "../../api/users.api";
 import Cookies from 'js-cookie';
+import { AuthContext } from "../../core/AuthContext";
+import { jwtDecode } from "jwt-decode";
 const LoginPage = () => {
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const togglePassword = () => setPasswordVisible(v => !v);
     const onSubmit = async (data) => {
@@ -17,20 +20,26 @@ const LoginPage = () => {
         };
         try {
             const res = await fetchLoginAPI(payload);
-            // normalize possible response shapes
             const accessToken = res?.accessToken || res?.access_token || res?.data?.accessToken || res?.data?.access_token;
             const refreshToken = res?.refreshToken || res?.refresh_token || res?.data?.refreshToken || res?.data?.refresh_token;
-
             if (accessToken) {
+                login(accessToken, refreshToken);
                 Cookies.set("accessToken", accessToken);
                 if (refreshToken) Cookies.set("refreshToken", refreshToken);
-                navigate('/home');
+                const decoded = jwtDecode(accessToken);
+                const userRole = decoded.roles
+
+                if (userRole && userRole.includes("admin")) {
+                    navigate('/admin');
+                    return
+                }
+                navigate('/');
                 return;
             }
 
             // Some backends return a success flag or message
             if (res && (res.success === true || res.status === 'ok')) {
-                navigate('/home');
+                navigate('/');
                 return;
             }
 

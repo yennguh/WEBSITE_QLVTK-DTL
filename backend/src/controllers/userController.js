@@ -96,9 +96,26 @@ const refreshToken = async (req, res) => {
     }
 }
 
+const ListUsers = async (req, res, next) => {
+    try {
+        const { page, limit, sortBy, sortOrder } = req.query;
+        const result = await userServices.ListUsers({
+            page,
+            limit,
+            sortBy,
+            sortOrder: sortOrder === 'asc' ? 1 : -1
+        });
+        
+        res.status(StatusCodes.OK).json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const userController = {
     CreatedUser,
     Login,
     InfoUser,
-    refreshToken
+    refreshToken,
+    ListUsers
 }
