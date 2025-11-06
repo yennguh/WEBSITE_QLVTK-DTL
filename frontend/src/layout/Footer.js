@@ -25,12 +25,12 @@ export default function Footer() {
             <li className="flex items-center space-x-3">
               <MapPin className="text-red-500 w-5 h-5" />
               <span>
-                Số 29 - đường Lê Đại Hành - phường Hoa Lư - tỉnh Trà Vinh
+                126 Đuong Nguyen Thien Thanh Phuong 5 87110 Trà Vinh
               </span>
             </li>
             <li className="flex items-center space-x-3">
               <Phone className="text-red-500 w-5 h-5" />
-              <span>+84 2293.880.470</span>
+              <span>+84 294 3855 246</span>
             </li>
           </ul>
         </div>
@@ -39,9 +39,9 @@ export default function Footer() {
         <div>
           <h4 className="text-lg font-semibold mb-4">Tổng quan</h4>
           <ul className="space-y-2 text-gray-400 text-sm">
-            <li><a href="#" className="hover:text-white">Giới thiệu</a></li>
-            <li><a href="#" className="hover:text-white">FAQs</a></li>
-            <li><a href="#" className="hover:text-white">Tin tức</a></li>
+            <li><a href="#" className="hover:text-white">Home</a></li>
+            <li><a href="#" className="hover:text-white">Bài đăng</a></li>
+            <li><a href="#" className="hover:text-white">Đăng bài</a></li>
             <li><a href="#" className="hover:text-white">Hướng dẫn sử dụng</a></li>
           </ul>
         </div>

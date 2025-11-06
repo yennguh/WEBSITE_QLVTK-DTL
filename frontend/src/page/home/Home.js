@@ -2,7 +2,7 @@ import React from 'react';
 import ImageSlider from './Slider-home';
 import slider1 from '../../public/assets/slider-1.jpg';
 import slider2 from '../../public/assets/slider-2.jpg';
-import slider3 from '../../public/assets/slider-3.png';
+import slider3 from '../../public/assets/slider-3.jpg';
 export default function Home() {
   return (
     <main className="site-content">
