@@ -6,12 +6,14 @@ import { useContext, useEffect, useState } from "react";
 import { MdOutlineClear } from "react-icons/md";
 import { inforUser } from "../api/users.api";
 import { AuthContext } from "../core/AuthContext";
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!open);
   const [user, setUser] = useState();
   const [showDropdown, setShowDropdown] = useState(false);
-  const { logout } = useContext(AuthContext);
+  const { logout, token } = useContext(AuthContext);
+
   const fetchUsers = async () => {
     const result = await inforUser();
     if (result) {
@@ -22,25 +24,22 @@ export default function Header() {
   };
 
   const handleLogout = () => {
-    logout()
-    window.location.href = '/login';
+    logout();
+    window.location.href = "/login";
   };
-  const { token } = useContext(AuthContext);
+
   useEffect(() => {
     if (token) {
       fetchUsers();
     }
   }, []);
+
   return (
     <header className="w-full shadow-sm border-b bg-white">
       <div className="w-full mx-auto flex items-center justify-between py-2 px-4">
-        {/* Logo + title */}
+        {/* Logo */}
         <div className="flex items-center gap-3">
-          <img
-            src={logoHeader}
-            alt="logo"
-            className="w-14 h-14 object-contain"
-          />
+          <img src={logoHeader} alt="logo" className="w-14 h-14 object-contain" />
         </div>
 
         {/* Navigation */}
@@ -59,17 +58,18 @@ export default function Header() {
             <a
               key={i}
               href="#"
-              className={`px-2 py-1 rounded-full transition ${item === "Trang chủ"
-                ? "bg-red-100 text-red-600 font-semibold text-lg"
-                : "hover:text-red-600 text-lg"
-                }`}
+              className={`px-2 py-1 rounded-full transition ${
+                item === "Trang chủ"
+                  ? "bg-red-100 text-red-600 font-semibold text-lg"
+                  : "hover:text-red-600 text-lg"
+              }`}
             >
               {item}
             </a>
           ))}
         </nav>
 
-        {/* Login + social + lang */}
+        {/* User / Login */}
         <div className="flex items-center gap-3">
           {user ? (
             <div className="relative">
@@ -77,7 +77,9 @@ export default function Header() {
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="flex items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded-md"
               >
-                <span>Xin chào, <span className="font-bold">{user.fullname}</span></span>
+                <span>
+                  Xin chào, <span className="font-bold">{user.fullname}</span>
+                </span>
               </button>
 
               {showDropdown && (
@@ -87,10 +89,16 @@ export default function Header() {
                     onClick={() => setShowDropdown(false)}
                   ></div>
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 py-1">
-                    <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
                       Thông tin cá nhân
                     </Link>
-                    <Link to="/change-password" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <Link
+                      to="/change-password"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
                       Đổi mật khẩu
                     </Link>
                     <button
@@ -104,12 +112,21 @@ export default function Header() {
               )}
             </div>
           ) : (
-            <Link to="/login">
-              <button className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-red-700">
-                Đăng nhập / Đăng ký
-              </button>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link to="/login">
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
+                  Đăng nhập
+                </button>
+              </Link>
+              <Link to="/register">
+                <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-md text-sm font-semibold hover:bg-red-50">
+                  Đăng ký
+                </button>
+              </Link>
+            </div>
           )}
+
+          {/* Facebook icon */}
           <div className="flex items-center gap-2">
             <a
               href="#"
@@ -118,10 +135,19 @@ export default function Header() {
               <FaFacebookF className="text-lg" />
             </a>
           </div>
-          <button onClick={toggleDrawer} type="button" className="relative inline-flex items-center p-1 text-sm font-medium text-center">
-            <IoIosNotifications className="text-2xl"></IoIosNotifications>
-            <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2">20</div>
+
+          {/* Notifications */}
+          <button
+            onClick={toggleDrawer}
+            type="button"
+            className="relative inline-flex items-center p-1 text-sm font-medium text-center"
+          >
+            <IoIosNotifications className="text-2xl" />
+            <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2">
+              20
+            </div>
           </button>
+
           {open && (
             <div
               className="fixed inset-0 bg-black bg-opacity-40 z-40"
@@ -131,8 +157,9 @@ export default function Header() {
 
           {/* Drawer */}
           <div
-            className={`fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform transition-transform duration-300 z-50 ${open ? "translate-x-0" : "translate-x-full"
-              }`}
+            className={`fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform transition-transform duration-300 z-50 ${
+              open ? "translate-x-0" : "translate-x-full"
+            }`}
           >
             <div className="flex items-center justify-between p-4 border-b">
               <h2 className="text-lg font-semibold">Thông báo</h2>
@@ -142,9 +169,10 @@ export default function Header() {
             </div>
 
             <div className="p-4 space-y-3 overflow-y-auto h-[calc(100%-4rem)]">
-              {/* Ví dụ danh sách thông báo */}
               <div className="p-3 bg-gray-100 rounded-md">
-                <p className="text-sm font-medium">Bạn có món đồ mới được tìm thấy!</p>
+                <p className="text-sm font-medium">
+                  Bạn có món đồ mới được tìm thấy!
+                </p>
                 <span className="text-xs text-gray-500">5 phút trước</span>
               </div>
 
@@ -154,10 +182,8 @@ export default function Header() {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </header>
-
   );
 }

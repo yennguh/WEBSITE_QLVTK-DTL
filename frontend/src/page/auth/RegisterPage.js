@@ -138,7 +138,7 @@ const RegisterPage = () => {
 
 
 
-                    <button type="submit" disabled={!isValid} className={`w-full bg-red-600 text-white font-semibold py-3 rounded-full transition ${!isValid ? "opacity-50 cursor-not-allowed" : "hover:bg-red-700"}`}>
+                    <button type="submit" disabled={!isValid} className={`w-full bg-blue-600 text-white font-semibold py-3 rounded-full transition ${!isValid ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"}`}>
                         Đăng ký
                     </button>
 
