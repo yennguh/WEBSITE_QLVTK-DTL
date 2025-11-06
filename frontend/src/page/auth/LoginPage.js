@@ -78,7 +78,7 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8 space-y-5">
                     <div>
                         <label className="text-sm font-medium text-gray-700">
-                            Email
+                            Email 
                         </label>
                         <input
                             {...register("email", {
